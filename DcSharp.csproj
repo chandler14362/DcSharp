@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>8</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Grammar\Gen" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Antlr4.Runtime.Standard" Version="4.7.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="TestSuite\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="TestSuite\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="TestSuite\**" />
+    </ItemGroup>
+
+</Project>
