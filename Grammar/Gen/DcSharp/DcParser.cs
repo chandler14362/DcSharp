@@ -1248,8 +1248,8 @@ public partial class DcParser : Parser {
 		public IToken type;
 		public IToken modulus;
 		public IToken divisor;
-		public IToken name;
 		public Array_specificationContext array;
+		public IToken name;
 		public ITerminalNode BUILTIN_TYPE() { return GetToken(DcParser.BUILTIN_TYPE, 0); }
 		public ITerminalNode[] IDENTIFIER() { return GetTokens(DcParser.IDENTIFIER); }
 		public ITerminalNode IDENTIFIER(int i) {
@@ -1335,18 +1335,18 @@ public partial class DcParser : Parser {
 			State = 207;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if (_la==IDENTIFIER) {
+			if (_la==LSBRACKET) {
 				{
-				State = 206; _localctx.name = Match(IDENTIFIER);
+				State = 206; _localctx.array = array_specification();
 				}
 			}
 
 			State = 210;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if (_la==LSBRACKET) {
+			if (_la==IDENTIFIER) {
 				{
-				State = 209; _localctx.array = array_specification();
+				State = 209; _localctx.name = Match(IDENTIFIER);
 				}
 			}
 
@@ -2231,9 +2231,9 @@ public partial class DcParser : Parser {
 		'\x2', '\xCC', '\xCD', '\a', '\f', '\x2', '\x2', '\xCD', '\xCF', '\a', 
 		' ', '\x2', '\x2', '\xCE', '\xCC', '\x3', '\x2', '\x2', '\x2', '\xCE', 
 		'\xCF', '\x3', '\x2', '\x2', '\x2', '\xCF', '\xD1', '\x3', '\x2', '\x2', 
-		'\x2', '\xD0', '\xD2', '\a', '\x1F', '\x2', '\x2', '\xD1', '\xD0', '\x3', 
+		'\x2', '\xD0', '\xD2', '\x5', '(', '\x15', '\x2', '\xD1', '\xD0', '\x3', 
 		'\x2', '\x2', '\x2', '\xD1', '\xD2', '\x3', '\x2', '\x2', '\x2', '\xD2', 
-		'\xD4', '\x3', '\x2', '\x2', '\x2', '\xD3', '\xD5', '\x5', '(', '\x15', 
+		'\xD4', '\x3', '\x2', '\x2', '\x2', '\xD3', '\xD5', '\a', '\x1F', '\x2', 
 		'\x2', '\xD4', '\xD3', '\x3', '\x2', '\x2', '\x2', '\xD4', '\xD5', '\x3', 
 		'\x2', '\x2', '\x2', '\xD5', '\xD7', '\x3', '\x2', '\x2', '\x2', '\xD6', 
 		'\xD8', '\x5', '\x30', '\x19', '\x2', '\xD7', '\xD6', '\x3', '\x2', '\x2', 

@@ -62,7 +62,7 @@ typedef_declaration : TYPEDEF p=parameter ;
 
 // Parameters
 parameter 
-  : type=(BUILTIN_TYPE | IDENTIFIER) parameter_range? ('%' modulus=NUMBER)? ('/' divisor=NUMBER)?  name=IDENTIFIER? array=array_specification? default_value? ;
+  : type=(BUILTIN_TYPE | IDENTIFIER) parameter_range? ('%' modulus=NUMBER)? ('/' divisor=NUMBER)?  array=array_specification? name=IDENTIFIER? default_value? ;
 
 array_specification
   : '[' range=range_argument? ']'
