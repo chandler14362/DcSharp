@@ -1,4 +1,6 @@
+using Krypton.Buffers;
 using System;
+using System.Buffers.Binary;
 
 namespace DcSharp
 {
@@ -130,11 +132,11 @@ namespace DcSharp
                 context = context.next;
             }
         }
-        
+
         private DcParameter BuildDcParameterFromContext(DcParser.ParameterContext context)
         {
             DcParameter parameter;
-            
+
             uint divisor = 1;
             if (context.divisor != null)
                 divisor = uint.Parse(context.divisor.Text);
@@ -160,9 +162,208 @@ namespace DcSharp
             }
 
             parameter.Name = context.name?.Text ?? "";
+
+
+
+            if (context.default_value() != null) {
+                var bw = new GrowingMemoryBuffer(new byte[64]);
+                CreateDefaultValueFromParameter(parameter, context.default_value(), ref bw);
+                parameter.DefaultValue = bw.Data;
+            }
+
             return parameter;
         }
-        
+
+        private void CreateDefaultValueFromParameter(DcParameter pi, DcParser.Default_valueContext context, ref GrowingMemoryBuffer bw)
+        {
+            switch (pi)
+            {
+                case DcSimpleParameter param: {
+                        PackValueFromSimpleParameter(param, context.value.GetText(), ref bw);
+                        break;
+                }
+                case DcArrayParameter param: {
+                        PackValueFromArrayParameter(param, context, ref bw);
+                        break;
+                }
+                default:
+                    throw new Exception("Unsupported default value for parameter.");
+            }
+        }
+
+        private void PackValueFromSimpleParameter(DcSimpleParameter param, String text, ref GrowingMemoryBuffer bw)
+        {
+
+            switch (param.Type){
+                case DcSubatomicType.Int8:
+                    {
+                        if (!sbyte.TryParse(text, out var value))
+                            throw new Exception("Error parsing default value");
+                        bw.WriteInt8(value);
+                        break;
+                    }
+                case DcSubatomicType.UInt8:
+                    {
+                        if (!byte.TryParse(text, out var value))
+                            throw new Exception("Error parsing default value");
+                        bw.WriteUInt8(value);
+                        break;
+                    }
+                case DcSubatomicType.Int16:
+                    {
+                        if (!short.TryParse(text, out var value))
+                            throw new Exception("Error parsing default value");
+                        bw.WriteInt16(value);
+                        break;
+                    }
+                case DcSubatomicType.UInt16:
+                    {
+                        if (!ushort.TryParse(text, out var value))
+                            throw new Exception("Error parsing default value");
+                        bw.WriteUInt16(value);
+                        break;
+                    }
+                case DcSubatomicType.Int32:
+                    {
+                        if (!int.TryParse(text, out var value))
+                            throw new Exception("Error parsing default value");
+                        bw.WriteInt32(value);
+                        break;
+                    }
+                case DcSubatomicType.UInt32:
+                    {
+                        if (!uint.TryParse(text, out var value))
+                            throw new Exception("Error parsing default value");
+                        bw.WriteUInt32(value);
+                        break;
+                    }
+                case DcSubatomicType.Int64:
+                    {
+                        if (!long.TryParse(text, out var value))
+                            throw new Exception("Error parsing default value");
+                        bw.WriteInt64(value);
+                        break;
+                    }
+                case DcSubatomicType.UInt64:
+                    {
+                        if (!ulong.TryParse(text, out var value))
+                            throw new Exception("Error parsing default value");
+                        bw.WriteUInt64(value);
+                        break;
+                    }
+                case DcSubatomicType.Char:
+                    {
+                        bw.WriteUInt8((byte)text[0]);
+                        break;
+                    }
+                case DcSubatomicType.Blob:
+                    {
+                        if (text.Length == 0 || text == "''" || text == "\"\"" || text == "[]")
+                        {
+                            bw.WriteUInt16(0);
+                            return;
+                        }
+
+
+                        if (!text.StartsWith('['))
+                        {
+                            bw.WriteString8(text);
+                            return;
+                        }
+
+                        text = text.Substring(1, text.Length - 2);
+
+
+                        var bookmark = bw.ReserveBookmark(2);
+                        int totalSize = 0;
+
+                        String[] vars = text.Split(',');
+
+                        foreach (String var in vars)
+                        {
+                            String[] byteDef = var.Split('*');
+                            byte value = byte.Parse(byteDef[0]);
+
+                            if (byteDef.Length == 1)
+                            {
+                                bw.WriteUInt8(value);
+                                ++totalSize;
+                                continue;
+                            }
+
+                            ushort size = ushort.Parse(byteDef[1]);
+                            for (int i = 0; i < size; i++)
+                            {
+                                bw.WriteUInt8(value);
+                            }
+
+                            totalSize += size;
+
+                        }
+
+                        bw.WriteBookmark(bookmark, (ushort)totalSize, BinaryPrimitives.WriteUInt16LittleEndian);
+
+                        return;
+
+                    }
+                case DcSubatomicType.String:
+                    {
+                        if (text.Length > 2)
+                            bw.WriteString8(text.Substring(1, text.Length - 1));
+                        return;
+                    }
+                case DcSubatomicType.Float64:
+                    {
+                        if (!double.TryParse(text, out var value))
+                            throw new Exception("Error parsing default value");
+                        bw.WriteFloat64(value);
+                        break;
+                    }
+                default:
+                    throw new Exception("Unsupported DCType for packing default:" + param.Type);
+            }
+        }
+
+        private void PackValueFromArrayParameter(DcArrayParameter param, DcParser.Default_valueContext context, ref GrowingMemoryBuffer bw)
+        {
+            String text = context.value.GetText();
+            if(text == "[]")
+            {
+                bw.WriteUInt16(0);
+                return;
+            }
+
+
+            text = text.Substring(1, text.Length - 2);
+            var bookmark = bw.ReserveBookmark(2);
+
+            ushort length = 0;
+
+            foreach (var element in text.Split(','))
+            {
+                String[] elementDef = element.Split('*');
+
+                if (elementDef.Length > 1)
+                {
+                    ushort count = ushort.Parse(elementDef[1]);
+                    for (ushort i = 0; i < count; i++)
+                    {
+                        PackValueFromSimpleParameter((DcSimpleParameter)param.GetNestedField(0), elementDef[0], ref bw);
+                    }
+
+                    length += count;
+                }
+                else
+                {
+                    PackValueFromSimpleParameter((DcSimpleParameter)param.GetNestedField(0), element, ref bw);
+                    length += 1;
+                }
+            }
+
+            bw.WriteBookmark(bookmark, length, BinaryPrimitives.WriteUInt16LittleEndian);
+        }
+
+
         private DcParameter CreateParameterFromName(string name, uint divisor=1)
         {
             // Builtin types:

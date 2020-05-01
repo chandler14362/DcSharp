@@ -34,6 +34,12 @@ namespace TestSuite
 
             var p = DcPacker.UnpackBytes(field, data);
             Console.WriteLine(p.Length);
+
+            dclass = dcFile.GetClassByName("DistributedToon");
+            field = dclass.GetFieldByName("setEmoteAccess");
+            byte[] defaultValue = ((DcField)field.GetNestedField(0)).DefaultValue.ToArray();
+            Console.WriteLine("size:" + defaultValue.Length);
+            Console.WriteLine(BitConverter.ToString(defaultValue));
         }
     }
 }

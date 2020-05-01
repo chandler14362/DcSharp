@@ -13,7 +13,7 @@ dclass Account {
 struct BarrierData {
   uint16 context;
   string name;
-  uint32 avIds[];
+  uint32[] avIds;
 };
 
 dclass DistributedObject {
@@ -132,7 +132,7 @@ dclass DistributedPlayer : DistributedAvatar {
   setCommonChatFlags(uint8) broadcast ram;
   setSC(uint16) broadcast ownsend airecv;
   setSCCustom(uint16) broadcast ownsend airecv;
-  setFriendsList(uint32uint8array = []) required ownrecv db airecv;
+  setFriendsList(uint32uint8array) required ownrecv db airecv;
   OwningAccount(uint32);
   WishName(string);
   WishNameState(string);
@@ -189,7 +189,7 @@ dclass DistributedAnimatedProp : DistributedObject {
   setState(string, int16) required broadcast ram;
 };
 
-typedef int16 pair16[2];
+typedef int16[2] pair16;
 
 dclass DistributedToon : DistributedPlayer {
   setDNAString(blob = '') required broadcast db;
@@ -214,7 +214,7 @@ dclass DistributedToon : DistributedPlayer {
                         0 * 6        // Drop
                         ]) required ownrecv db;
   setMaxNPCFriends(uint16 = 16) required ownrecv db;
-  setNPCFriendsDict(uint32uint8array = []) required ownrecv db;
+  setNPCFriendsDict(uint32uint8array) required ownrecv db;
   setDefaultShard(uint32 = 200000000) required ownrecv db;
   setDefaultZone(uint32 = 2000) required ownrecv db;
   setShtickerBook(blob = []) required ownrecv db;

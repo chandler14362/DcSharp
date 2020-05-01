@@ -1,11 +1,13 @@
 using System;
 using System.Buffers;
 using System.Buffers.Binary;
+using Krypton.Buffers;
 
 namespace DcSharp
 {
     public static class DcPacker
     {
+
         public static ReadOnlySpan<byte> UnpackBytes(DcPackerInterface pi, ReadOnlySpan<byte> buffer)
         {
             if (pi.HasFixedByteSize && pi.HasFixedStructure)

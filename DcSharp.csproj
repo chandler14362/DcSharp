@@ -1,7 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.0</TargetFramework>
+        <generateassemblyconfigurationattribute>false</generateassemblyconfigurationattribute>
+        <generateassemblydescriptionattribute>false</generateassemblydescriptionattribute>
+        <generateassemblyproductattribute>false</generateassemblyproductattribute>
+        <generateassemblytitleattribute>false</generateassemblytitleattribute>
+        <generateassemblycompanyattribute>false</generateassemblycompanyattribute>
+        <generateassemblyfileversionattribute>false</generateassemblyfileversionattribute>
+        <generateassemblyinformationalversionattribute>false</generateassemblyinformationalversionattribute>
+        <generateassemblyversionattribute>false</generateassemblyversionattribute>
         <Nullable>enable</Nullable>
         <LangVersion>8</LangVersion>
     </PropertyGroup>
@@ -24,6 +32,10 @@
 
     <ItemGroup>
       <None Remove="TestSuite\**" />
+    </ItemGroup>
+  
+    <ItemGroup>
+    <PackageReference Include="Krypton.Buffers" Version="1.0.0" />
     </ItemGroup>
 
 </Project>
