@@ -33,7 +33,7 @@ namespace DcSharp
 
         public bool IsAirecv => (1 << 8 & KeywordList.Flags) != 0;
 
-        public ReadOnlyMemory<byte> DefaultValue {get; set;}
+        public ReadOnlyMemory<byte> DefaultValue { get; internal set; }
 
         public DcField() : base("")
         {

@@ -192,6 +192,30 @@ namespace DcSharp
             return _typedefsByName.TryGetValue(name, out typedef);
         }
 
+        public bool TryGetField<T>(int index, out T field) where T : DcField
+        {
+            if (!TryGetField(index, out var f))
+            {
+                field = null;
+                return false;
+            }
+
+            field = f as T;
+            return field != null;
+        }
+        
+        public bool TryGetField(int index, out DcField field)
+        {
+            if (0 <= index && index <= _fieldsByIndex.Count - 1)
+            {
+                field = _fieldsByIndex[index];
+                return true;
+            }
+            
+            field = null;
+            return false;
+        }
+
         public void MarkInheritedFieldsStale()
         {
             _inheritedFieldsStale = true;

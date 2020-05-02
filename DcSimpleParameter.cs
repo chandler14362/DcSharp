@@ -190,7 +190,7 @@ namespace DcSharp
             }
 
             Divisor = divisor;
-            if (Divisor != -1 && (PackType == DcPackType.Int || PackType == DcPackType.Int64 ||
+            if (Divisor != 1 && (PackType == DcPackType.Int || PackType == DcPackType.Int64 ||
                                   PackType == DcPackType.UInt || PackType == DcPackType.UInt64))
             {
                 PackType = DcPackType.Double;
