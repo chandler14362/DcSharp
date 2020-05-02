@@ -99,14 +99,24 @@ string_constant
   ;
 
 struct_constant
-  : '{' value_constant (',' value_constant)* '}'
+  : '{' struct_value_list? '}'
+  ;
+  
+struct_value_list
+  : value_constant
+  | value_constant ',' next=struct_value_list
   ;
 
-array_constant :
-  | '[' array_value_constant (',' array_value_constant)* ']'
+array_constant 
+  : '[' array_value_list? ']'
   ;
 
-array_value_constant :
-   | v=NUMBER '*' t=NUMBER
-   | value_constant
-   ;
+array_value_list
+  : array_value_constant
+  | array_value_constant ',' next=array_value_list
+  ;
+  
+array_value_constant 
+  : value_constant '*' t=NUMBER
+  | value_constant
+  ;

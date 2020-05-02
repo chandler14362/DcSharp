@@ -15,6 +15,7 @@ namespace DcSharp
                     var dclass = new DcClass(null, "", true, false);
                     dclass.AddField(new DcSimpleParameter(DcSubatomicType.UInt32));
                     dclass.AddField(new DcSimpleParameter(DcSubatomicType.UInt8));
+                    dclass.RebuildInheritedFields();
                     _uint32uint8type = new DcClassParameter(dclass);
                 }
 

@@ -372,6 +372,18 @@ public partial class DcParserBaseListener : IDcParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStruct_constant([NotNull] DcParser.Struct_constantContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="DcParser.struct_value_list"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterStruct_value_list([NotNull] DcParser.Struct_value_listContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DcParser.struct_value_list"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitStruct_value_list([NotNull] DcParser.Struct_value_listContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="DcParser.array_constant"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -383,6 +395,18 @@ public partial class DcParserBaseListener : IDcParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitArray_constant([NotNull] DcParser.Array_constantContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DcParser.array_value_list"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterArray_value_list([NotNull] DcParser.Array_value_listContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DcParser.array_value_list"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitArray_value_list([NotNull] DcParser.Array_value_listContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DcParser.array_value_constant"/>.
 	/// <para>The default implementation does nothing.</para>

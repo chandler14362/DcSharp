@@ -312,6 +312,16 @@ public interface IDcParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStruct_constant([NotNull] DcParser.Struct_constantContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="DcParser.struct_value_list"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStruct_value_list([NotNull] DcParser.Struct_value_listContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DcParser.struct_value_list"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStruct_value_list([NotNull] DcParser.Struct_value_listContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="DcParser.array_constant"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -321,6 +331,16 @@ public interface IDcParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitArray_constant([NotNull] DcParser.Array_constantContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="DcParser.array_value_list"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterArray_value_list([NotNull] DcParser.Array_value_listContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DcParser.array_value_list"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitArray_value_list([NotNull] DcParser.Array_value_listContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="DcParser.array_value_constant"/>.
 	/// </summary>
