@@ -153,18 +153,33 @@ namespace DcSharp
             if (context.divisor != null)
                 divisor = uint.Parse(context.divisor.Text);
 
+            // TODO: parameter range support
+            if (context.parameter_range() != null)
+            {
+                var line = context.parameter_range().Start.Line;
+                throw new NotImplementedException($"Parameter range on line {line} is currently unsupported");
+            }
+
             // Array parameters
-            // TODO: Parse range in specification
             var array = context.array;
             if (array != null)
             {
                 var elementType = CreateParameterFromName(context.type.Text, divisor);
-                parameter = new DcArrayParameter(elementType, new DcUIntRange());
+                
+                var range = new DcUIntRange();
+                if (context.array.range != null)
+                    ReadRangeArgumentsIntoRange(context.array.range, range);
+                
+                parameter = new DcArrayParameter(elementType, range);
 
                 array = array.next;
                 while (array != null)
                 {
-                    parameter.AppendArraySpecification(new DcUIntRange());
+                    range = new DcUIntRange();
+                    if (context.array.range != null)
+                        ReadRangeArgumentsIntoRange(context.array.range, range);
+
+                    parameter.AppendArraySpecification(range);
                     array = array.next;
                 }
             }
@@ -183,6 +198,41 @@ namespace DcSharp
             }
 
             return parameter;
+        }
+
+        private void ReadRangeArgumentsIntoRange(DcParser.Range_argumentsContext context, DcUIntRange range)
+        {
+            while (context != null)
+            {
+                var arg = context.range_argument();
+                
+                if (arg.single != null)
+                {
+                    Console.WriteLine(arg.single);
+                    if (!uint.TryParse(arg.single.Text, out var single))
+                        throw new Exception($"Error parsing array range '{arg.single.Text}' on line {arg.single.Line}");
+
+                    range.Add(single, single);
+                }
+                else if (arg.@char != null)
+                {
+                    // Index 1 because the text includes quotes
+                    var value = (uint) arg.@char.Text[1];
+                    range.Add(value, value);
+                }
+                else
+                {
+                    if (!uint.TryParse(arg.min.Text, out var min))
+                        throw new Exception($"Error parsing array range min '{arg.min.Text}' on line {arg.min.Line}");
+
+                    if (!uint.TryParse(arg.min.Text, out var max))
+                        throw new Exception($"Error parsing array range max '{arg.max.Text}' on line {arg.max.Line}");
+
+                    range.Add(min, max);
+                }
+                
+                context = context.next;
+            }
         }
 
         private void CreateDefaultValueFromParameter(DcParameter pi, DcParser.Default_valueContext context, ref GrowingSpanBuffer bw)

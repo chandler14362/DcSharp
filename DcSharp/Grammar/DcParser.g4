@@ -65,17 +65,21 @@ parameter
   : type=(BUILTIN_TYPE | IDENTIFIER) parameter_range? ('%' modulus=NUMBER)? ('/' divisor=NUMBER)?  array=array_specification? name=IDENTIFIER? default_value? ;
 
 array_specification
-  : '[' range=range_argument? ']'
-  | '[' range=range_argument? ']' next=array_specification
+  : '[' range=range_arguments? ']'
+  | '[' range=range_arguments? ']' next=array_specification
   ;
 
 // Ranges
 parameter_range : '(' range_arguments ')' ;
-range_arguments : range_argument (',' range_argument)* ;
+range_arguments 
+  : range_argument
+  | range_argument ',' next=range_arguments
+  ;
+
 range_argument
-  : NUMBER
-  | QUOTED_CHAR
-  | NUMBER '-' NUMBER
+  : single=NUMBER
+  | char=QUOTED_CHAR
+  | min=NUMBER '-' max=NUMBER
   ;
   
 // Default values
