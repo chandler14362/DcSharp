@@ -37,5 +37,5 @@ msbuild.wrn
 .vs/
 
 # Antlr4 files
-Grammar/Gen/DcSharp/*.tokens
-Grammar/Gen/DcSharp/*.interp
+DcSharp/Grammar/Gen/DcSharp/*.tokens
+DcSharp/Grammar/Gen/DcSharp/*.interp

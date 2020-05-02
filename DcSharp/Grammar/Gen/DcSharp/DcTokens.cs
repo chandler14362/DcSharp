@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from /Users/chandlerstowell/Documents/git/DcSharp/Grammar/DcTokens.g4 by ANTLR 4.7.2
+// Generated from /Users/chandlerstowell/Documents/git/DcSharp/DcSharp/Grammar/DcTokens.g4 by ANTLR 4.7.2
 
 // Unreachable code detected
 #pragma warning disable 0162

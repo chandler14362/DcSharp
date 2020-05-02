@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <Folder Include="Grammar\Gen" />
+      <Folder Include="Grammar\Gen\DcSharp" />
     </ItemGroup>
 
     <ItemGroup>
