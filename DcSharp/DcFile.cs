@@ -5,16 +5,8 @@ using System.Collections.Generic;
 
 namespace DcSharp
 {
-    public enum DcMode
-    {
-        Legacy,
-        Modern
-    }
-    
     public class DcFile
     {
-        public readonly DcMode Mode;
-
         private List<DcClass> _classes;
 
         private Dictionary<int, DcClass> _classesById;
@@ -43,10 +35,8 @@ namespace DcSharp
 
         public int NumTypedefs => _typedefs.Count;
         
-        public DcFile(DcMode mode)
+        public DcFile()
         {
-            Mode = mode;
-            
             _classes = new List<DcClass>();
             _classesById = new Dictionary<int, DcClass>();
             _thingsByName = new Dictionary<string, DcDeclaration>();
