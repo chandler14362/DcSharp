@@ -15,14 +15,18 @@ namespace DcSharp
 
             if (pi.PackType == DcPackType.Array || pi.PackType == DcPackType.Blob || pi.PackType == DcPackType.String)
             {
-                var length = BinaryPrimitives.ReadUInt16LittleEndian(buffer);
-                return buffer.Slice(0, length + 2); // + 2 for the length header
+                var length =  pi.NumLengthBytes switch {
+                    2 => BinaryPrimitives.ReadUInt16LittleEndian(buffer),
+                    4 => BinaryPrimitives.ReadUInt32LittleEndian(buffer),
+                    _ => throw new Exception()
+                };
+                return buffer.Slice(0, (int) (pi.NumLengthBytes + length));
             }
             
             var offset = 0;
             if (pi.HasNestedFields)
             {
-                for (var i = 0; i < pi.NumNestedFields;i++)
+                for (var i = 0; i < pi.NumNestedFields; i++)
                 {
                     var f = pi.GetNestedField(i);
                     var d = UnpackBytes(f, buffer.Slice(offset));
