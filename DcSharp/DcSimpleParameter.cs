@@ -38,13 +38,9 @@ namespace DcSharp
         
         public bool HasModulus { get; private set; }
         
-        public DcSimpleParameter(DcSimpleParameter other) : base(other)
-        {
-            Type = other.Type;
-            Divisor = other.Divisor;
-        }
-        
-        public DcSimpleParameter(DcSubatomicType type, uint divisor = 1)
+        public DcLongRange LongRange { get; private set; }
+
+        public DcSimpleParameter(DcSubatomicType type, uint divisor = 1, DcLongRange? range = null)
         {
             Type = type;
             Divisor = divisor;
@@ -171,7 +167,8 @@ namespace DcSharp
             }
 
             HasFixedStructure = HasFixedByteSize;
-
+            
+            LongRange = range ?? new DcLongRange();
             SetDivisor(divisor);
 
             if (NestedType != DcSubatomicType.Invalid)

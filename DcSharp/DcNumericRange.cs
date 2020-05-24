@@ -19,6 +19,23 @@ namespace DcSharp
         }
     }
     
+    public class DcLongRange
+    {
+        public class Range
+        {
+            public long Min { get; set; }
+        
+            public long Max { get; set; }
+        }
+
+        public List<Range> Ranges = new List<Range>();
+
+        public void Add(long min, long max)
+        {
+            Ranges.Add(new Range { Min = min, Max = max });
+        }
+    }
+    
     public class DcUIntRange
     {
         public class Range

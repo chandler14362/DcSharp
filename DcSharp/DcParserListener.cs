@@ -151,18 +151,18 @@ namespace DcSharp
             if (context.divisor != null)
                 divisor = uint.Parse(context.divisor.Text);
 
-            // TODO: parameter range support
+            DcLongRange? paramRange = null;
             if (context.parameter_range() != null)
             {
-                var line = context.parameter_range().Start.Line;
-                throw new NotImplementedException($"Parameter range on line {line} is currently unsupported");
+                paramRange = new DcLongRange();
+                ReadRangeArgumentsIntoRange(context.parameter_range().range_arguments(), paramRange);
             }
 
             // Array parameters
             var array = context.array;
             if (array != null)
             {
-                var elementType = CreateParameterFromName(context.type.Text, divisor);
+                var elementType = CreateParameterFromName(context.type.Text, divisor, paramRange);
                 
                 var range = new DcUIntRange();
                 if (context.array.range != null)
@@ -183,12 +183,13 @@ namespace DcSharp
             }
             else
             {
-                parameter = CreateParameterFromName(context.type.Text, divisor);
+                parameter = CreateParameterFromName(context.type.Text, divisor, paramRange);
             }
 
             parameter.Name = context.name?.Text ?? "";
             
-            if (context.default_value() != null) {
+            if (context.default_value() != null) 
+            {
                 var bw = new GrowingSpanBuffer(stackalloc byte[128]);
                 bw.WriteValueConstant(parameter, context.default_value().value);
                 parameter.DefaultValue = bw.Data.ToArray();
@@ -232,35 +233,69 @@ namespace DcSharp
             }
         }
         
-        private DcParameter CreateParameterFromName(string name, uint divisor=1)
+        private void ReadRangeArgumentsIntoRange(DcParser.Range_argumentsContext context, DcLongRange range)
+        {
+            while (context != null)
+            {
+                var arg = context.range_argument();
+                
+                if (arg.single != null)
+                {
+                    if (!long.TryParse(arg.single.Text, out var single))
+                        throw new Exception($"Error parsing array range '{arg.single.Text}' on line {arg.single.Line}");
+
+                    range.Add(single, single);
+                }
+                else if (arg.@char != null)
+                {
+                    // Index 1 because the text includes quotes
+                    var value = (uint) arg.@char.Text[1];
+                    range.Add(value, value);
+                }
+                else
+                {
+                    if (!long.TryParse(arg.min.Text, out var min))
+                        throw new Exception($"Error parsing array range min '{arg.min.Text}' on line {arg.min.Line}");
+
+                    if (!long.TryParse(arg.min.Text, out var max))
+                        throw new Exception($"Error parsing array range max '{arg.max.Text}' on line {arg.max.Line}");
+
+                    range.Add(min, max);
+                }
+                
+                context = context.next;
+            }
+        }
+        
+        private DcParameter CreateParameterFromName(string name, uint divisor=1, DcLongRange range=null)
         {
             // Builtin types:
             if (name == "uint8")
-                return new DcSimpleParameter(DcSubatomicType.UInt8, divisor);
+                return new DcSimpleParameter(DcSubatomicType.UInt8, divisor, range);
             else if (name == "uint16")
-                return new DcSimpleParameter(DcSubatomicType.UInt16, divisor);
+                return new DcSimpleParameter(DcSubatomicType.UInt16, divisor, range);
             else if (name == "uint32")
-                return new DcSimpleParameter(DcSubatomicType.UInt32, divisor);
+                return new DcSimpleParameter(DcSubatomicType.UInt32, divisor, range);
             else if (name == "uint64")
-                return new DcSimpleParameter(DcSubatomicType.UInt64, divisor);
+                return new DcSimpleParameter(DcSubatomicType.UInt64, divisor, range);
             else if (name == "int8")
-                return new DcSimpleParameter(DcSubatomicType.Int8, divisor);
+                return new DcSimpleParameter(DcSubatomicType.Int8, divisor, range);
             else if (name == "int16")
-                return new DcSimpleParameter(DcSubatomicType.Int16, divisor);
+                return new DcSimpleParameter(DcSubatomicType.Int16, divisor, range);
             else if (name == "int32")
-                return new DcSimpleParameter(DcSubatomicType.Int32, divisor);
+                return new DcSimpleParameter(DcSubatomicType.Int32, divisor, range);
             else if (name == "int64")
-                return new DcSimpleParameter(DcSubatomicType.Int64, divisor);
+                return new DcSimpleParameter(DcSubatomicType.Int64, divisor, range);
             else if (name == "float64")
-                return new DcSimpleParameter(DcSubatomicType.Float64);
+                return new DcSimpleParameter(DcSubatomicType.Float64, range: range);
             else if (name == "string")
-                return new DcSimpleParameter(DcSubatomicType.String);
+                return new DcSimpleParameter(DcSubatomicType.String, range: range);
             else if (name == "char")
-                return new DcSimpleParameter(DcSubatomicType.Char);
+                return new DcSimpleParameter(DcSubatomicType.Char, range: range);
             else if (name == "blob")
-                return new DcSimpleParameter(DcSubatomicType.Blob);
+                return new DcSimpleParameter(DcSubatomicType.Blob, range: range);
             else if (name == "blob32")
-                return new DcSimpleParameter(DcSubatomicType.Blob32);
+                return new DcSimpleParameter(DcSubatomicType.Blob32, range: range);
             else if (name == "int8array")
                 return new DcSimpleParameter(DcSubatomicType.Int8Array, divisor);
             else if (name == "int16array")
