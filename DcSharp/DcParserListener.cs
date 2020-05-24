@@ -1,6 +1,5 @@
 using Krypton.Buffers;
 using System;
-using System.Buffers.Binary;
 
 namespace DcSharp
 {
@@ -69,14 +68,13 @@ namespace DcSharp
             _currentClass = null;
         }
 
-        public override void EnterClass_field(DcParser.Class_fieldContext context)
+        public override void EnterParameter_field(DcParser.Parameter_fieldContext context)
         {
-            // Our other listeners will deal with the the atomic and molecular fields
-            if (context.parameter() == null)
-                return;
-
             var param = BuildDcParameterFromContext(context.parameter());
-            _currentClass.AddField(param);
+            ReadKeywordsIntoList(context.keywords, param.KeywordList);
+            
+            if (!_currentClass.AddField(param))
+                throw new Exception($"Failed to add field {param.Name} to class {_currentClass.Name}");
         }
 
         public override void EnterMolecular_field(DcParser.Molecular_fieldContext context)
@@ -98,7 +96,7 @@ namespace DcSharp
             }
 
             if (!_currentClass.AddField(field))
-                throw new Exception($"Failed to add field {context.name.Text}");
+                throw new Exception($"Failed to add field {context.name.Text} to class {_currentClass.Name}");
         }
 
         public override void EnterAtomic_field(DcParser.Atomic_fieldContext context)
@@ -130,7 +128,7 @@ namespace DcSharp
             }
 
             if (!_currentClass.AddField(field))
-                throw new Exception($"Failed to add field {context.name.Text}");
+                throw new Exception($"Failed to add field {context.name.Text} to class {_currentClass.Name}");
         }
 
         private void ReadKeywordsIntoList(DcParser.Keyword_listContext? context, DcKeywordList into)

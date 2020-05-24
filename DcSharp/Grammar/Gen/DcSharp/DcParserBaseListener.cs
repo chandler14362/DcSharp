@@ -156,6 +156,18 @@ public partial class DcParserBaseListener : IDcParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStruct_declaration([NotNull] DcParser.Struct_declarationContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="DcParser.parameter_field"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterParameter_field([NotNull] DcParser.Parameter_fieldContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DcParser.parameter_field"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitParameter_field([NotNull] DcParser.Parameter_fieldContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="DcParser.atomic_field"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

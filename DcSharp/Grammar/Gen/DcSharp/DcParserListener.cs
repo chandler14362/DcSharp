@@ -132,6 +132,16 @@ public interface IDcParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStruct_declaration([NotNull] DcParser.Struct_declarationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="DcParser.parameter_field"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterParameter_field([NotNull] DcParser.Parameter_fieldContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="DcParser.parameter_field"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitParameter_field([NotNull] DcParser.Parameter_fieldContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="DcParser.atomic_field"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

@@ -27,12 +27,14 @@ parent_class_list
   | name=IDENTIFIER ',' next=parent_class_list 
   ;
 
-class_field : atomic_field | molecular_field | parameter ;
+class_field : atomic_field | molecular_field | parameter_field ;
 
 // Struct declaration
 struct_declaration : STRUCT name=IDENTIFIER '{' (class_field ';')* '}' ;
 
 // Fields
+parameter_field : parameter keywords=keyword_list? ; 
+
 atomic_field : name=IDENTIFIER '(' parameters=field_parameters? ')' keywords=keyword_list? ;
 
 field_parameters
