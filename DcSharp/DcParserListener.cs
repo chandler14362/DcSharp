@@ -207,8 +207,8 @@ namespace DcSharp
                 
                 if (arg.single != null)
                 {
-                    if (!uint.TryParse(arg.single.Text, out var single))
-                        throw new Exception($"Error parsing array range '{arg.single.Text}' on line {arg.single.Line}");
+                    if (!uint.TryParse(arg.single.GetText(), out var single))
+                        throw new Exception($"Error parsing array range '{arg.single.GetText()}' on line {arg.single.Start.Line}");
 
                     range.Add(single, single);
                 }
@@ -220,11 +220,11 @@ namespace DcSharp
                 }
                 else
                 {
-                    if (!uint.TryParse(arg.min.Text, out var min))
-                        throw new Exception($"Error parsing array range min '{arg.min.Text}' on line {arg.min.Line}");
+                    if (!uint.TryParse(arg.min.GetText(), out var min))
+                        throw new Exception($"Error parsing array range min '{arg.min.GetText()}' on line {arg.min.Start.Line}");
 
-                    if (!uint.TryParse(arg.min.Text, out var max))
-                        throw new Exception($"Error parsing array range max '{arg.max.Text}' on line {arg.max.Line}");
+                    if (!uint.TryParse(arg.min.GetText(), out var max))
+                        throw new Exception($"Error parsing array range max '{arg.max.GetText()}' on line {arg.max.Start.Line}");
 
                     range.Add(min, max);
                 }
@@ -241,8 +241,8 @@ namespace DcSharp
                 
                 if (arg.single != null)
                 {
-                    if (!long.TryParse(arg.single.Text, out var single))
-                        throw new Exception($"Error parsing array range '{arg.single.Text}' on line {arg.single.Line}");
+                    if (!long.TryParse(arg.single.GetText(), out var single))
+                        throw new Exception($"Error parsing array range '{arg.single.GetText()}' on line {arg.single.Start.Line}");
 
                     range.Add(single, single);
                 }
@@ -254,11 +254,11 @@ namespace DcSharp
                 }
                 else
                 {
-                    if (!long.TryParse(arg.min.Text, out var min))
-                        throw new Exception($"Error parsing array range min '{arg.min.Text}' on line {arg.min.Line}");
+                    if (!long.TryParse(arg.min.GetText(), out var min))
+                        throw new Exception($"Error parsing array range min '{arg.min.GetText()}' on line {arg.min.Start.Line}");
 
-                    if (!long.TryParse(arg.min.Text, out var max))
-                        throw new Exception($"Error parsing array range max '{arg.max.Text}' on line {arg.max.Line}");
+                    if (!long.TryParse(arg.min.GetText(), out var max))
+                        throw new Exception($"Error parsing array range max '{arg.max.GetText()}' on line {arg.max.Start.Line}");
 
                     range.Add(min, max);
                 }

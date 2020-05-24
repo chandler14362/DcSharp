@@ -11,7 +11,7 @@ dc_declaration
 
 // Import statements
 import_statement 
-  : FROM module_path IMPORT module_name 
+  : FROM module_path module_extension? IMPORT module_name module_extension?
   | IMPORT module_path module_extension?
   ;
 
@@ -62,7 +62,7 @@ typedef_declaration : TYPEDEF p=parameter ;
 
 // Parameters
 parameter 
-  : type=(BUILTIN_TYPE | IDENTIFIER) parameter_range? ('%' modulus=UNSIGNED_NUMBER)? ('/' divisor=UNSIGNED_NUMBER)? name=IDENTIFIER? array=array_specification?  default_value? ;
+  : type=(BUILTIN_TYPE | IDENTIFIER) ('%' modulus=UNSIGNED_NUMBER)? ('/' divisor=UNSIGNED_NUMBER)? parameter_range? name=IDENTIFIER? array=array_specification?  default_value? ;
 
 array_specification
   : '[' range=range_arguments? ']'
@@ -77,9 +77,9 @@ range_arguments
   ;
 
 range_argument
-  : single=UNSIGNED_NUMBER
+  : single=number_constant
   | char=QUOTED_CHAR
-  | min=UNSIGNED_NUMBER '-' max=UNSIGNED_NUMBER
+  | min=number_constant '-' max=number_constant
   ;
 
 // Default values
