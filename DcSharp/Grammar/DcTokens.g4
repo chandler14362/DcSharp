@@ -71,7 +71,7 @@ fragment ESCAPED_SINGLE_QUOTE : '\\\'' ;
 SINGLE_QUOTED_STRING : '\'' ( ESCAPED_SINGLE_QUOTE | ~('\n'|'\r') )*? '\'' ;
 
 IDENTIFIER : [A-Za-z_][A-Za-z_0-9]* ;
-NUMBER : '-'? [0-9]+ ;
+UNSIGNED_NUMBER : [0-9]+ ;
 CHAR : [a-zA-Z] ;
 
 SINGLE_LINE_COMMENT : '//' .*? '\n' -> skip ;

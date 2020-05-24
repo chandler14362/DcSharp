@@ -62,7 +62,7 @@ typedef_declaration : TYPEDEF p=parameter ;
 
 // Parameters
 parameter 
-  : type=(BUILTIN_TYPE | IDENTIFIER) parameter_range? ('%' modulus=NUMBER)? ('/' divisor=NUMBER)? name=IDENTIFIER? array=array_specification?  default_value? ;
+  : type=(BUILTIN_TYPE | IDENTIFIER) parameter_range? ('%' modulus=UNSIGNED_NUMBER)? ('/' divisor=UNSIGNED_NUMBER)? name=IDENTIFIER? array=array_specification?  default_value? ;
 
 array_specification
   : '[' range=range_arguments? ']'
@@ -77,11 +77,11 @@ range_arguments
   ;
 
 range_argument
-  : single=NUMBER
+  : single=UNSIGNED_NUMBER
   | char=QUOTED_CHAR
-  | min=NUMBER '-' max=NUMBER
+  | min=UNSIGNED_NUMBER '-' max=UNSIGNED_NUMBER
   ;
-  
+
 // Default values
 default_value 
   : '=' value=value_constant ;
@@ -89,7 +89,8 @@ default_value
 value_constant : number_constant | string_constant | struct_constant | array_constant ;
 
 number_constant 
-  : NUMBER 
+  : '-' UNSIGNED_NUMBER
+  | UNSIGNED_NUMBER
   ;
 
 string_constant 
@@ -117,6 +118,6 @@ array_value_list
   ;
   
 array_value_constant 
-  : value_constant '*' t=NUMBER
+  : value_constant '*' t=UNSIGNED_NUMBER
   | value_constant
   ;

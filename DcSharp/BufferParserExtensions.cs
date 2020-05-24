@@ -216,13 +216,13 @@ namespace DcSharp
         internal static bool TryParseInt64(this DcParser.Number_constantContext number, out long result)
         {
             // TODO: more long types
-            return long.TryParse(number.NUMBER().GetText(), out result);
+            return long.TryParse(number.GetText(), out result);
         }
         
         internal static bool TryParseUInt64(this DcParser.Number_constantContext number, out ulong result)
         {
             // TODO: more ulong types
-            return ulong.TryParse(number.NUMBER().GetText(), out result);
+            return ulong.TryParse(number.GetText(), out result);
         }
         
         internal static bool TryParseString(this DcParser.String_constantContext str, out string result)
