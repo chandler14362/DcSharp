@@ -69,13 +69,13 @@ namespace DcSharp
             _currentClass = null;
         }
 
-        public override void EnterStruct_field(DcParser.Struct_fieldContext context)
+        public override void EnterClass_field(DcParser.Class_fieldContext context)
         {
-            // Our other listeners will deal with the class_field
-            if (context.p == null)
+            // Our other listeners will deal with the the atomic and molecular fields
+            if (context.parameter() == null)
                 return;
 
-            var param = BuildDcParameterFromContext(context.p);
+            var param = BuildDcParameterFromContext(context.parameter());
             _currentClass.AddField(param);
         }
 

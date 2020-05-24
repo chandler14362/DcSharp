@@ -16,7 +16,7 @@ import_statement
   ;
 
 module_path : IDENTIFIER ('.' IDENTIFIER)* ;
-module_name : (STAR_IMPORT | (IDENTIFIER module_extension?)) ;
+module_name : (STAR | (IDENTIFIER module_extension?)) ;
 module_extension : ('/' IDENTIFIER)+ ;
 
 // Class declaration
@@ -27,12 +27,10 @@ parent_class_list
   | name=IDENTIFIER ',' next=parent_class_list 
   ;
 
-class_field : atomic_field | molecular_field ;
+class_field : atomic_field | molecular_field | parameter ;
 
 // Struct declaration
-struct_declaration : STRUCT name=IDENTIFIER '{' (struct_field ';')* '}' ;
-
-struct_field : (class_field | p=parameter) ;
+struct_declaration : STRUCT name=IDENTIFIER '{' (class_field ';')* '}' ;
 
 // Fields
 atomic_field : name=IDENTIFIER '(' parameters=field_parameters? ')' keywords=keyword_list? ;
@@ -62,7 +60,7 @@ typedef_declaration : TYPEDEF p=parameter ;
 
 // Parameters
 parameter 
-  : type=(BUILTIN_TYPE | IDENTIFIER) parameter_range? ('%' modulus=NUMBER)? ('/' divisor=NUMBER)?  array=array_specification? name=IDENTIFIER? default_value? ;
+  : type=(BUILTIN_TYPE | IDENTIFIER) parameter_range? ('%' modulus=NUMBER)? ('/' divisor=NUMBER)? name=IDENTIFIER? array=array_specification?  default_value? ;
 
 array_specification
   : '[' range=range_arguments? ']'
