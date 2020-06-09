@@ -35,5 +35,11 @@ namespace DcSharp
             }
             return buffer.Slice(0, offset);
         }
+        
+        public static ReadOnlyMemory<byte> UnpackBytes(DcPackerInterface pi, ReadOnlyMemory<byte> buffer)
+        {
+            var s = UnpackBytes(pi, buffer.Span);
+            return buffer.Slice(0, s.Length);
+        }
     }
 }
