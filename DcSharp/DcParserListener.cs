@@ -120,7 +120,7 @@ namespace DcSharp
             
             if (hasDefaultValue)
             {
-                var bw = new GrowingSpanBuffer(stackalloc byte[512]);
+                var bw = new SpanBufferWriter(stackalloc byte[512]);
                 foreach (var element in field.Elements)
                     bw.WriteBytes(element.DefaultValue.Span);
                 field.DefaultValue = bw.Data.ToArray();
@@ -190,7 +190,7 @@ namespace DcSharp
             
             if (context.default_value() != null) 
             {
-                var bw = new GrowingSpanBuffer(stackalloc byte[128]);
+                var bw = new SpanBufferWriter(stackalloc byte[512]);
                 bw.WriteValueConstant(parameter, context.default_value().value);
                 parameter.DefaultValue = bw.Data.ToArray();
                 parameter.HasDefaultValue = true;

@@ -73,6 +73,5 @@ namespace DcSharp
             FixedByteSize = 0;
             HasFixedStructure = true;
         }
-
     }
 }

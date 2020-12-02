@@ -6,7 +6,7 @@ namespace DcSharp
 {
     internal static class BufferParserExtensions
     {
-        internal static void WriteValueConstant(this ref GrowingSpanBuffer writer, DcPackerInterface pi, DcParser.Value_constantContext value)
+        internal static void WriteValueConstant(this ref SpanBufferWriter writer, DcPackerInterface pi, DcParser.Value_constantContext value)
         {
             switch (pi.PackType)
             {
@@ -75,13 +75,13 @@ namespace DcSharp
                         if (!value.string_constant().TryParseString(out result))
                             throw new Exception($"{value.Start.Line}:{value.Start.Column} Invalid value constant: {value.GetText()}");
 
-                        writer.WriteString8(result);
+                        writer.WriteUTF8String(result);
                     }
                     else if (value.array_constant() != null)
                     {
                         var nestedType = pi.GetNestedField(0);
                         
-                        GrowingSpanBuffer.Bookmark bookmark = default;
+                        SpanBufferWriter.Bookmark bookmark = default;
                         if (!pi.HasFixedByteSize)
                             bookmark = writer.ReserveBookmark(pi.NumLengthBytes);
 
@@ -143,7 +143,7 @@ namespace DcSharp
                         throw new Exception($"{value.Start.Line}:{value.Start.Column} Invalid value constant: {value.GetText()}");
 
                     // dynamic length string
-                    writer.WriteString8(res);
+                    writer.WriteUTF8String(res);
                     return;
                 }
                 case DcPackType.Array:
@@ -153,7 +153,7 @@ namespace DcSharp
 
                     var nestedType = pi.GetNestedField(0);
                     
-                    GrowingSpanBuffer.Bookmark bookmark = default;
+                    SpanBufferWriter.Bookmark bookmark = default;
                     if (!pi.HasFixedByteSize)
                         bookmark = writer.ReserveBookmark(2);
 

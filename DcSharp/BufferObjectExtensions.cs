@@ -58,7 +58,7 @@ namespace DcSharp
                         return (char) reader.ReadUInt8();
                     
                     // dynamic length string
-                    return reader.ReadString8();
+                    return reader.ReadUTF8String();
                 }
                 case DcPackType.Array:
                 {
@@ -95,14 +95,14 @@ namespace DcSharp
             };
         }
         
-        public static void WriteObject(this GrowingMemoryBuffer writer, DcPackerInterface pi, object obj)
+        public static void WriteObject(this MemoryBufferWriter writer, DcPackerInterface pi, object obj)
         {
-            var spanWriter = new GrowingSpanBuffer(stackalloc byte[512]);
+            var spanWriter = new SpanBufferWriter(stackalloc byte[512]);
             spanWriter.WriteObject(pi, obj);
             writer.WriteBytes(spanWriter.Data);
         }
         
-        public static void WriteObject(this ref GrowingSpanBuffer writer, DcPackerInterface pi, object obj)
+        public static void WriteObject(this ref SpanBufferWriter writer, DcPackerInterface pi, object obj)
         {
             switch (pi.PackType)
             {
@@ -172,7 +172,7 @@ namespace DcSharp
                     }
                     
                     // dynamic length string
-                    writer.WriteString8((string) obj);
+                    writer.WriteUTF8String((string) obj);
                     return;
                 }
                 case DcPackType.Array:
@@ -180,7 +180,7 @@ namespace DcSharp
                     var nestedType = pi.GetNestedField(0);
                     var arrayValue = (IEnumerable<object>) obj;
                     
-                    GrowingSpanBuffer.Bookmark bookmark = default;
+                    SpanBufferWriter.Bookmark bookmark = default;
                     if (!pi.HasFixedByteSize)
                         bookmark = writer.ReserveBookmark(2);
 

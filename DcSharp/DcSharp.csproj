@@ -15,28 +15,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Grammar\Gen" />
-      <Folder Include="Grammar\Gen\DcSharp" />
+        <Folder Include="Grammar\Gen" />
+        <Folder Include="Grammar\Gen\DcSharp" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Antlr4.Runtime.Standard" Version="4.7.2" />
+        <PackageReference Include="Antlr4.Runtime.Standard" Version="4.7.2" />
+        <PackageReference Include="Krypton.Buffers" Version="2.0.1" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="TestSuite\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="TestSuite\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="TestSuite\**" />
-    </ItemGroup>
-  
-    <ItemGroup>
-    <PackageReference Include="Krypton.Buffers" Version="1.0.1" />
-    </ItemGroup>
-
+    
 </Project>
