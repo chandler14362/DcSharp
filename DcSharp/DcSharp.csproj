@@ -20,8 +20,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Antlr4.Runtime.Standard" Version="4.7.2" />
-        <PackageReference Include="Krypton.Buffers" Version="2.0.1" />
+        <PackageReference Include="Antlr4.Runtime.Standard" Version="4.9.3" />
+        <PackageReference Include="Krypton.Buffers" Version="2.0.3" />
     </ItemGroup>
     
 </Project>
